@@ -1,25 +1,34 @@
 #include "Game.h"
 #include <iostream>
-
+#include "LogManager/LogManager.h"
 Game::Game()
 {
 	bIsRunning = false;
 	window = nullptr;
 	renderer = nullptr;
 	millisecsPreviousFrame = 0;
-	std::cout << "Game constructor called!" << std::endl;
+	FLogEntry LogEntry;
+	LogEntry.messages = "Game constructor called!";
+	LogEntry.type = ELogType::LM_Info;
+	LogManager::Log(LogEntry);
 }
 
 Game::~Game()
 {
-	std::cout << "Game Destructor called!" << std::endl;
+	FLogEntry LogEntry;
+	LogEntry.messages = "Game Destructor called!";
+	LogEntry.type = ELogType::LM_Info;
+	LogManager::Log(LogEntry);
 }
 
 void Game::Initialize()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) //returns zero if its success
 	{
-		std::cerr << "Error Initializing SDL." << std::endl;
+		FLogEntry LogEntry;
+		LogEntry.messages = "Error Initializing SDL.";
+		LogEntry.type = ELogType::LM_Error;
+		LogManager::Log(LogEntry);
 		return;
 	}
 	const char* GameName = "My Game";
@@ -36,7 +45,10 @@ void Game::Initialize()
 		);
 	if (!window)
 	{
-		std::cerr << "Error in creating window." << std::endl;
+		FLogEntry LogEntry;
+		LogEntry.messages = "Error in creating window.";
+		LogEntry.type = ELogType::LM_Error;
+		LogManager::Log(LogEntry);
 		return;
 	}
 	Uint32 rendererflag = SDL_RENDERER_ACCELERATED;
@@ -45,7 +57,10 @@ void Game::Initialize()
 	renderer = SDL_CreateRenderer(window, -1, rendererflag);
 	if (!renderer)
 	{
-		std::cerr << "Error in creating SDL_Renderer." << std::endl;
+		FLogEntry LogEntry;
+		LogEntry.messages = "Error in creating SDL_Renderer.";
+		LogEntry.type = ELogType::LM_Error;
+		LogManager::Log(LogEntry);
 		return;
 	}
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
