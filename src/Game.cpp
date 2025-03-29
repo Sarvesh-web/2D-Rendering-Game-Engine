@@ -6,6 +6,7 @@ Game::Game()
 	bIsRunning = false;
 	window = nullptr;
 	renderer = nullptr;
+	millisecsPreviousFrame = 0;
 	std::cout << "Game constructor called!" << std::endl;
 }
 
@@ -78,13 +79,26 @@ void Game::Setup()
 {
 	//TODO: Initialize Game Objects
 	playerPosition = glm::vec2(10.0, 20.0);
-	playerVelocity = glm::vec2(1.0, 0.0);
+	playerVelocity = glm::vec2(100.0, 0.0);
 }
 void Game::Update()
 {
+	if (!bUncappedFrames)
+	{
+		// we are too fast so need to maintain a delay of fixed time stamp value in the update
+		//while (!SDL_TICKS_PASSED(SDL_GetTicks(), millisecsPreviousFrame + MILLISECS_PER_FRAME)); //commented as it holds the cpu threads because of while loop
+		int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame); //converting deltatime into seconds as timeToWait is in Seconds
+		//SDL_DELAY called is based on Delegate to stop SDL operations so it solves the holding of cpu threads utiliztion
+		if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME)
+			SDL_Delay(timeToWait);
+	}
 	// TODO: Update game objects..
-	playerPosition.x += playerVelocity.x;
-	playerPosition.y += playerVelocity.y;
+	double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame)/1000.0; // time to wait   in miliseconds
+	// stor the previous frame time
+	millisecsPreviousFrame = SDL_GetTicks();
+
+	playerPosition.x += playerVelocity.x* deltaTime;
+	playerPosition.y += playerVelocity.y* deltaTime;
 }
 
 void Game::Render()
@@ -114,7 +128,7 @@ void Game::Run()
 {
 	Setup();
 	//main thing is to fix time stamp for better physics simulations
-	//while loop was a inconsistent solution
+	//while loop was an inconsistent solution
 	while (bIsRunning)
 	{
 		ProcessInput();
