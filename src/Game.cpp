@@ -1,0 +1,131 @@
+#include "Game.h"
+#include <iostream>
+
+Game::Game()
+{
+	bIsRunning = false;
+	window = nullptr;
+	renderer = nullptr;
+	std::cout << "Game constructor called!" << std::endl;
+}
+
+Game::~Game()
+{
+	std::cout << "Game Destructor called!" << std::endl;
+}
+
+void Game::Initialize()
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) //returns zero if its success
+	{
+		std::cerr << "Error Initializing SDL." << std::endl;
+		return;
+	}
+	const char* GameName = "My Game";
+	SDL_DisplayMode displayMode;
+	SDL_GetCurrentDisplayMode(0, &displayMode);
+	windowWidth = displayMode.w;
+	windowHeigth = displayMode.h;
+	window = SDL_CreateWindow(GameName,
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		windowWidth,
+		windowHeigth,
+		SDL_WINDOW_BORDERLESS
+		);
+	if (!window)
+	{
+		std::cerr << "Error in creating window." << std::endl;
+		return;
+	}
+	Uint32 rendererflag = SDL_RENDERER_ACCELERATED;
+	if (bVSync)
+		rendererflag = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+	renderer = SDL_CreateRenderer(window, -1, rendererflag);
+	if (!renderer)
+	{
+		std::cerr << "Error in creating SDL_Renderer." << std::endl;
+		return;
+	}
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	bIsRunning = true;
+}
+
+void Game::ProcessInput()
+{
+	SDL_Event sdlEvent;
+	while (SDL_PollEvent(&sdlEvent)) 
+	{
+		switch (sdlEvent.type) 
+		{
+		case SDL_QUIT:
+			bIsRunning = false;
+			break;
+		case SDL_KEYDOWN:
+			if (sdlEvent.key.keysym.sym == SDLK_ESCAPE)
+			{
+				bIsRunning = false;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
+void Game::Setup()
+{
+	//TODO: Initialize Game Objects
+	playerPosition = glm::vec2(10.0, 20.0);
+	playerVelocity = glm::vec2(1.0, 0.0);
+}
+void Game::Update()
+{
+	// TODO: Update game objects..
+	playerPosition.x += playerVelocity.x;
+	playerPosition.y += playerVelocity.y;
+}
+
+void Game::Render()
+{
+	SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
+	SDL_RenderClear(renderer);
+	//TODO: Render all GameObjects
+	//draw a PNG
+	const char* imgPath = "./assets/images/tank-tiger-right.png";
+	SDL_Surface* surface=IMG_Load(imgPath);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+	SDL_Rect destRect = { 
+		static_cast<int>(playerPosition.x),
+		static_cast<int>(playerPosition.y),
+		32,
+		32
+	};
+	SDL_RenderCopy(renderer, texture, NULL, &destRect);
+	SDL_DestroyTexture(texture);
+	//SDL_RenderFillRect(renderer, &player);
+	// sdl is based on double buffer render system
+	SDL_RenderPresent(renderer);
+}
+
+void Game::Run()
+{
+	Setup();
+	//main thing is to fix time stamp for better physics simulations
+	//while loop was a inconsistent solution
+	while (bIsRunning)
+	{
+		ProcessInput();
+		Update();
+		Render();
+	}
+}
+
+void Game::Destroy()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
