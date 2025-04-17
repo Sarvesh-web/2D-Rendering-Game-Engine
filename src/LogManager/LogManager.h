@@ -12,9 +12,9 @@ struct FLogEntry
 	ELogType type;
 	std::string messages;
 };
+static std::vector<FLogEntry> messages;
 class LogManager 
 {
 public:
-	static std::vector<FLogEntry> messages;
 	static void Log(FLogEntry LogEntry);
 };

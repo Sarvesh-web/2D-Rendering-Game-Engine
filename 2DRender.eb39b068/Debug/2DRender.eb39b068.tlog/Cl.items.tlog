@@ -4,5 +4,7 @@ E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\libs\imgui\imgui_
 E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\libs\imgui\imgui_draw.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\imgui_draw.obj
 E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\libs\imgui\imgui_sdl.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\imgui_sdl.obj
 E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\libs\imgui\imgui_widgets.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\imgui_widgets.obj
-E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\src\Game.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\Game.obj
+E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\src\ECS\ECS.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\ECS.obj
+E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\src\Game\Game.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\Game.obj
+E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\src\LogManager\LogManager.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\LogManager.obj
 E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\src\Main.cpp;E:\SelfProjects\2DGameRenderingEngine\2D-Rendering-Game-Engine\2DRender.eb39b068\Debug\Main.obj
