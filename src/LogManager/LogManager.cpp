@@ -1,10 +1,10 @@
 #include "LogManager.h"
-#include <iostream>
+
 #define GREEN "\033[32m"  // Green color for INFO
 #define YELLOW "\033[33m"  // Yellow for WARNING
 #define RED "\033[31m"    // Red color for ERROR
 #define RESET "\033[0m"   // Reset color to default
-void LogManager::Log(FLogEntry LogEntry)
+void LogManager::Log(const FLogEntry& LogEntry)
 {
 	// TO DO :
 	// Print on the console the messgae : 

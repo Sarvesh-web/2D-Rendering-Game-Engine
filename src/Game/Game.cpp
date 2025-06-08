@@ -8,28 +8,23 @@ Game::Game()
 	window = nullptr;
 	renderer = nullptr;
 	millisecsPreviousFrame = 0;
-	FLogEntry LogEntry;
-	LogEntry.messages = "Game constructor called!";
-	LogEntry.type = ELogType::LM_Info;
-	LogManager::Log(LogEntry);
+
+	//create a registry 
+	registry = std::make_unique<Registry>();
+
+	LOG(LM_Info, "Game constructor called!");
 }
 
 Game::~Game()
 {
-	FLogEntry LogEntry;
-	LogEntry.messages = "Game Destructor called!";
-	LogEntry.type = ELogType::LM_Info;
-	LogManager::Log(LogEntry);
+	LOG(LM_Info, "Game Destructor called!");
 }
 
 void Game::Initialize()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) //returns zero if its success
 	{
-		FLogEntry LogEntry;
-		LogEntry.messages = "Error Initializing SDL.";
-		LogEntry.type = ELogType::LM_Error;
-		LogManager::Log(LogEntry);
+		LOG(LM_Error, "Error Initializing SDL.");
 		return;
 	}
 	const char* GameName = "My Game";
@@ -46,10 +41,7 @@ void Game::Initialize()
 		);
 	if (!window)
 	{
-		FLogEntry LogEntry;
-		LogEntry.messages = "Error in creating window.";
-		LogEntry.type = ELogType::LM_Error;
-		LogManager::Log(LogEntry);
+		LOG(LM_Error, "Error in creating window.");
 		return;
 	}
 	Uint32 rendererflag = SDL_RENDERER_ACCELERATED;
@@ -58,10 +50,7 @@ void Game::Initialize()
 	renderer = SDL_CreateRenderer(window, -1, rendererflag);
 	if (!renderer)
 	{
-		FLogEntry LogEntry;
-		LogEntry.messages = "Error in creating SDL_Renderer.";
-		LogEntry.type = ELogType::LM_Error;
-		LogManager::Log(LogEntry);
+		LOG(LM_Error, "Error in creating SDL_Renderer.");
 		return;
 	}
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
@@ -94,11 +83,18 @@ void Game::ProcessInput()
 
 void Game::Setup()
 {
-	//TODO: Initialize Game Objects
-	//Entity tank = registry.CreateEntity();
-	// tank.AddComponent<TransformComponent>();
-	//tank.AddComponent<BoxColliderComponent>();
-	//tank.AddComponent<SpriteComponent>("./assets/images/tank.png");
+
+	//create some entities
+	Entity tank = registry->CreateEntity();
+
+	//Add some components to the entity
+	tank.AddComponent<TransformComponent>(glm::vec2(10.0, 30.0), glm::vec2(1.0,1.0), 0.0);
+	tank.AddComponent<RigidBodyComponent>(glm::vec2(50.0f, 0.0f));
+
+	//remove some components to the entity
+	tank.RemoveComponent<TransformComponent>();
+
+
 }
 void Game::Update()
 {
@@ -165,4 +161,5 @@ void Game::Destroy()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+
 }
